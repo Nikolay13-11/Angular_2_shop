@@ -1,0 +1,37 @@
+mat-panel-title {
+  height: 100%;
+}
+
+.icon-cart {
+  transform: scale(.6);
+}
+
+.container {
+  display: flex;
+  align-items: flex-end;
+}
+
+.items-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summ {
+  margin-left: auto;
+  font-weight: bold;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
+
+.remove {
+  cursor: pointer;
+}
