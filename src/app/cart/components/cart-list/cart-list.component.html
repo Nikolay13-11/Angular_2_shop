@@ -1,0 +1,25 @@
+<mat-accordion>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <div class="container">
+        <span>Cart</span>
+        <mat-icon class="icon-cart"  matBadge="{{cart.length}}" aria-hidden="false" fontIcon="shopping_basket"></mat-icon>
+      </div>
+    </mat-expansion-panel-header>
+    <div class="items-container" *ngIf="cart.length > 0">
+        <div class="item" *ngFor="let item of cart;  trackBy: trackByFn">
+          <p>{{item.title}}</p>
+          <span class="price">
+            <span class="remove">
+              <mat-icon aria-hidden="false" fontIcon="delete"></mat-icon>
+            </span>
+            <span>{{item.cost | currency: 'USD'}}</span>
+          </span>
+        </div>
+        <p class="summ">{{summ | currency: 'USD'}}</p>
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+  </mat-expansion-panel>
+</mat-accordion>
