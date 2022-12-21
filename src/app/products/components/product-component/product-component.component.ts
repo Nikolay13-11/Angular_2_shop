@@ -14,3 +14,4 @@ export class ProductComponentComponent {
     console.log('Thank you for purchase! ')
   }
 }
+// этот компонент наверное лишний и его можно убрать?
