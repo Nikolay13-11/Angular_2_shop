@@ -16,22 +16,13 @@ mat-panel-title {
   flex-direction: column;
 }
 
-.item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .summ {
   margin-left: auto;
   font-weight: bold;
+  font-size: 20px;
 }
 
-.price {
-  display: flex;
-  align-items: center;
-}
-
-.remove {
-  cursor: pointer;
+.item {
+  border-radius: 5px;
+  padding: 10px;
 }
