@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 
 import { CartService } from "../../services/cart.service";
 import { IProductModel } from "../../../products/models/product.model";
@@ -8,21 +8,26 @@ import { IProductModel } from "../../../products/models/product.model";
   templateUrl: './cart-list.component.html',
   styleUrls: ['./cart-list.component.scss']
 })
-export class CartListComponent implements OnInit {
+export class CartListComponent {
   panelOpenState: boolean = false;
-  cart: IProductModel[] = [];
+  colorForHover = 'linear-gradient(5deg, rgba(19,93,189,1) 17%, rgba(195,30,6,0.9612219887955182) 78%)';
 
-  constructor(private CartService: CartService) {}
+  constructor(public cartService: CartService) {}
 
-  ngOnInit() {
-    this.cart = this.CartService.getCart();
-  }
-
-  get summ() {
-    return this.cart.reduce((acc, curr) => acc += curr.cost, 0).toFixed(2);
-  }
 
   trackByFn(index: number, item: IProductModel) {
     return item.id;
+  }
+
+  onDeleteItem(id: string) {
+    this.cartService.deleteFromCart(id)
+  }
+
+  onQuantityIncrease(id: string) {
+    this.cartService.onQuantityIncrease(id)
+  }
+
+  onQuantityDecrease(id: string) {
+    this.cartService.onQuantityDecrease(id)
   }
 }

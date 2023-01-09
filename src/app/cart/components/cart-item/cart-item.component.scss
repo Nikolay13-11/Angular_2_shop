@@ -1,0 +1,44 @@
+:host {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+p {
+  font-size: 18px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+mat-icon {
+  cursor: pointer;
+}
+
+.right-container {
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.right {
+  margin-left: 50px;
+}
+
+.count {
+  margin: 0 10px;
+  font-size: 18px;
+}
+
+.remove {
+  margin-left: 10px;
+}

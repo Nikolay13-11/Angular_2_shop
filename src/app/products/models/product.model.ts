@@ -5,4 +5,5 @@ export interface IProductModel {
   imageUrl: string;
   cost: number;
   currency: string;
+  isAvailable: boolean;
 }

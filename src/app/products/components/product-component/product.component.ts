@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 import { IProductModel } from "../../models/product.model";
 
@@ -8,9 +8,10 @@ import { IProductModel } from "../../models/product.model";
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent {
-  @Input() product!: IProductModel
+  @Input() product!: IProductModel;
+  @Output() addProductToCart = new EventEmitter<IProductModel>()
 
   onAddToCart() {
-    console.log('Thank you for purchase! ')
+    this.addProductToCart.emit(this.product)
   }
 }

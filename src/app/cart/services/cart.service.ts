@@ -1,31 +1,55 @@
 import { Injectable } from '@angular/core';
 
 import {IProductModel} from "../../products/models/product.model";
+import {ICartModel} from "../models/cart.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  cart: IProductModel[] = [
-    {
-      id: '1',
-      title: 'Apeks XTX 200 DIN Octopus XTX 40 Regulator Set',
-      description: 'The XTX200 is the flagship of the Apeks regulator range and the definitive blend of style and high performance. Every detail has been carefully designed to offer a regulator of the highest quality.',
-      imageUrl: 'https://www.tradeinn.com/f/7/78556/apeks-xtx-200-din-octopus-xtx-40-regulator-set.jpg',
-      cost: +(Math.random() * 2000).toFixed(2),
-      currency: 'USD'
-    },
-    {
-      id: '2',
-      title: 'Scubapro Jet Diving Fins',
-      description: 'SCUBAPRO Jet Fins have a long and celebrated history of performance. They set the standard for power and durability in 1965, and are still immensely popular today.',
-      imageUrl: 'https://www.tradeinn.com/f/0/4307/scubapro-jet-diving-fins.jpg',
-      cost: +(Math.random() * 2000).toFixed(2),
-      currency: 'USD'
-    },
-  ]
+  cart: ICartModel[] = []
 
-  getCart(): IProductModel[] {
+  getCart(): ICartModel[] {
     return this.cart
+  }
+
+  addProductToCart(product: IProductModel): void {
+    const isInCart = this.cart.some(el => el.id === product.id)
+    if(isInCart) {
+      const index = this.cart.findIndex(el => el.id === product.id)
+      this.cart[index].count++;
+      return;
+    }
+
+    this.cart.push({
+      ...product,
+      count: 1
+    })
+  }
+
+  deleteFromCart(id: string): void {
+    this.cart = this.cart.filter(product => product.id !== id)
+  }
+
+  onQuantityIncrease(id: string): void {
+    const index = this.cart.findIndex(el => el.id === id)
+    this.cart[index].count++
+  }
+
+  onQuantityDecrease(id: string): void {
+    const index = this.cart.findIndex(el => el.id === id)
+    if(this.cart[index].count > 1) {
+      this.cart[index].count--;
+      return;
+    }
+    this.deleteFromCart(id)
+  }
+
+  getTotalCost(): number {
+    return +this.cart.reduce((acc, curr) => acc += (curr.cost * curr.count), 0).toFixed(2);
+  }
+
+  getTotalQuantity(): number {
+    return this.cart.length
   }
 }
