@@ -11,6 +11,6 @@ import { SharedModule } from "../shared/shared.module";
     CommonModule,
     SharedModule
   ],
-  exports: [ProductListComponent, ProductComponent]
+  exports: [ProductListComponent /*,  ProductComponent*/ ]
 })
 export class ProductsModule { }
