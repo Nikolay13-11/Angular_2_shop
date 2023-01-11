@@ -14,6 +14,8 @@ export class CartService {
   }
 
   addProductToCart(product: IProductModel): void {
+    // не понял зачем тут два поиска some, findIndex
+    // думаю, что findIndex было бы достаточно
     const isInCart = this.cart.some(el => el.id === product.id)
     if(isInCart) {
       const index = this.cart.findIndex(el => el.id === product.id)
@@ -46,6 +48,8 @@ export class CartService {
   }
 
   getTotalCost(): number {
+    // тут в конце ; есть, а в следующем методе нет
+    // в чем логика?
     return +this.cart.reduce((acc, curr) => acc += (curr.cost * curr.count), 0).toFixed(2);
   }
 
