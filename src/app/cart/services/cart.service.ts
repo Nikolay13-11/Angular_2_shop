@@ -1,59 +1,77 @@
 import { Injectable } from '@angular/core';
 
-import {IProductModel} from "../../products/models/product.model";
-import {ICartModel} from "../models/cart.model";
+import { IProductModel } from "../../products/models/product.model";
+import { ICartModel } from "../models/cart.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  cart: ICartModel[] = []
+  private cartProducts: ICartModel[] = [];
 
-  getCart(): ICartModel[] {
-    return this.cart
+  getProducts(): ICartModel[] {
+    return this.cartProducts;
   }
 
-  addProductToCart(product: IProductModel): void {
-    // не понял зачем тут два поиска some, findIndex
-    // думаю, что findIndex было бы достаточно
-    const isInCart = this.cart.some(el => el.id === product.id)
-    if(isInCart) {
-      const index = this.cart.findIndex(el => el.id === product.id)
-      this.cart[index].count++;
+  addProduct(product: IProductModel): void {
+    const index = this.cartProducts.findIndex(el => el.id === product.id);
+
+    if(index >= 0) {
+      let targetProduct = this.cartProducts.splice(index, 1)[0];
+      targetProduct.count++;
+      this.cartProducts = [...this.cartProducts, targetProduct];
       return;
     }
 
-    this.cart.push({
+    this.cartProducts = [...this.cartProducts, {
       ...product,
       count: 1
-    })
-  }
+    }];
+  };
 
-  deleteFromCart(id: string): void {
-    this.cart = this.cart.filter(product => product.id !== id)
-  }
+  removeProduct(id: string): void {
+    this.cartProducts = this.cartProducts.filter(product => product.id !== id);
+  };
 
   onQuantityIncrease(id: string): void {
-    const index = this.cart.findIndex(el => el.id === id)
-    this.cart[index].count++
+    const index = this.cartProducts.findIndex(el => el.id === id);
+    const targetProduct = this.cartProducts.splice(index, 1)
+
+    this.changeQuantity(targetProduct[0], 1)
   }
 
   onQuantityDecrease(id: string): void {
-    const index = this.cart.findIndex(el => el.id === id)
-    if(this.cart[index].count > 1) {
-      this.cart[index].count--;
+    const index = this.cartProducts.findIndex(el => el.id === id);
+
+    if(this.cartProducts[index].count > 1) {
+      const targetProduct = this.cartProducts.splice(index, 1);
+      this.changeQuantity(targetProduct[0], -1);
+
       return;
     }
-    this.deleteFromCart(id)
-  }
 
-  getTotalCost(): number {
-    // тут в конце ; есть, а в следующем методе нет
-    // в чем логика?
-    return +this.cart.reduce((acc, curr) => acc += (curr.cost * curr.count), 0).toFixed(2);
-  }
+    this.removeProduct(id);
+  };
 
-  getTotalQuantity(): number {
-    return this.cart.length
-  }
+  get totalCost(): number {
+    return +this.cartProducts.reduce((acc, curr) => acc += (curr.cost * curr.count), 0).toFixed(2);
+  };
+
+  get totalQuantity(): number {
+    return this.cartProducts.length;
+  };
+
+  removeAllProducts() {
+    this.cartProducts = [];
+  };
+
+  isEmptyCart() {
+    this.cartProducts.length > 0;
+  };
+
+  private changeQuantity(product: ICartModel, count: number) {
+    product.count += count
+    this.cartProducts = [...this.cartProducts, product]
+  };
+
 }
