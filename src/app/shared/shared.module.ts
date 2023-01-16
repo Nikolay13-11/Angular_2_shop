@@ -5,11 +5,12 @@ import { MatCardModule } from "@angular/material/card";
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
-import { HighlightDirective } from "./directives/highlight.directive";
+
+import { ChangeFontSizeDirective, HighlightDirective } from "./directives";
 
 
 @NgModule({
-  declarations: [HighlightDirective],
+  declarations: [HighlightDirective, ChangeFontSizeDirective],
   imports: [
     CommonModule,
   ],
@@ -18,7 +19,8 @@ import { HighlightDirective } from "./directives/highlight.directive";
     MatExpansionModule,
     MatBadgeModule,
     MatIconModule,
-    HighlightDirective
+    HighlightDirective,
+    ChangeFontSizeDirective
   ],
 })
 export class SharedModule { }

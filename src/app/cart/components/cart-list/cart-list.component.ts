@@ -20,7 +20,7 @@ export class CartListComponent {
   }
 
   onDeleteItem(id: string) {
-    this.cartService.deleteFromCart(id)
+    this.cartService.removeProduct(id)
   }
 
   onQuantityIncrease(id: string) {

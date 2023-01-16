@@ -32,3 +32,13 @@
   9. Add HighLightDirective to change background of cart items;
   10. Header component change to standalone;
 
+### Services and DI
+  1. Modify cart Service(add new methods and chang old to immutable approach);
+  2. Add ConfigOptionsService with necessary methods and properties;
+  3. Add ConstantsService with necessary methods and properties;
+  4. Add GeneratorService with necessary methods and properties;
+  5. Add generator genID and use in GeneratorService;
+  6. Add LocalStorageService with necessary methods and properties;
+  7. All Services inject to FirstComponent using @Optional();
+  8. Add ChangeFontSizeDirective, which change font-weight for target element by click and include @Input() for set necessary value of font-weight or use default value;
+

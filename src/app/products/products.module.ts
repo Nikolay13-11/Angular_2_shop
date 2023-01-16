@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { ProductComponent, ProductListComponent } from "./components";
 import { SharedModule } from "../shared/shared.module";
 
@@ -11,6 +12,6 @@ import { SharedModule } from "../shared/shared.module";
     CommonModule,
     SharedModule
   ],
-  exports: [ProductListComponent /*,  ProductComponent*/ ]
+  exports: [ProductListComponent, ProductComponent ],
 })
 export class ProductsModule { }

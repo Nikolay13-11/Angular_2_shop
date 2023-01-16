@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
-import {ICartModel} from "../../models/cart.model";
+
+import { ICartModel } from "../../models/cart.model";
 
 @Component({
   selector: 'app-cart-item',
@@ -14,13 +15,13 @@ export class CartItemComponent {
 
   onDeleteItem(id: string) {
       this.deleteId.emit(id)
-  }
+  };
 
   onQuantityIncrease(id: string) {
     this.increaseId.emit(id)
-  }
+  };
 
   onQuantityDecrease(id: string) {
     this.decreaseId.emit(id)
-  }
+  };
 }

@@ -7,7 +7,7 @@
   </div>
   <div class="right">
     <span class="price">
-    <span>{{product.cost | currency: 'USD'}}</span>
+    <span>{{product.cost * product.count | currency: 'USD'}}</span>
       <mat-icon aria-hidden="false" class="remove" fontIcon="delete" (click)="onDeleteItem(product.id)"></mat-icon>
   </span>
   </div>
