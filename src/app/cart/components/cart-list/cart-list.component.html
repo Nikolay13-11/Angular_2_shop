@@ -1,13 +1,29 @@
 <mat-accordion>
-  <mat-expansion-panel hideToggle>
+  <mat-expansion-panel hideToggle class="t">
     <mat-expansion-panel-header>
       <div class="container">
         <span>Cart</span>
         <mat-icon class="icon-cart"  matBadge="{{cartService.totalQuantity}}" aria-hidden="false" fontIcon="shopping_basket"></mat-icon>
       </div>
     </mat-expansion-panel-header>
+    <div *ngIf="cartService.getProducts().length">
+      <mat-checkbox [(ngModel)]="direction">
+          <mat-icon *ngIf="direction; else elseBlock" aria-hidden="false" fontIcon="arrow_upward"></mat-icon>
+        <ng-template #elseBlock>
+          <mat-icon aria-hidden="false" fontIcon="arrow_downward"></mat-icon>
+        </ng-template>
+      </mat-checkbox>
+      <mat-form-field appearance="fill">
+        <mat-label>Sort By</mat-label>
+        <mat-select [(ngModel)]="selectedValue" name="sort By">
+          <mat-option *ngFor="let option of selectOptions | keyvalue" [value]="option.value">
+            {{option.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div class="items-container" *ngIf="cartService.totalQuantity > 0">
-        <div class="item" appHighlight [colorForHover]="colorForHover" *ngFor="let item of cartService.getProducts();  trackBy: trackByFn">
+        <div class="item" appHighlight [colorForHover]="colorForHover" *ngFor="let item of cartService.getProducts() | orderBy: selectedValue: direction;  trackBy: trackByFn">
           <app-cart-item
             [product]="item"
             (deleteId)="onDeleteItem($event)"
@@ -15,7 +31,10 @@
             (decreaseId)="onQuantityDecrease($event)"
           ></app-cart-item>
         </div>
-        <p class="summ">{{cartService.totalCost | currency: 'USD'}}</p>
+        <p class="summ">{{cartService.totalCost | currency}}</p>
+    </div>
+    <div class="empty" *ngIf="!cartService.getProducts().length">
+      <p>Cart is empty...</p>
     </div>
   </mat-expansion-panel>
   <mat-expansion-panel (opened)="panelOpenState = true"
