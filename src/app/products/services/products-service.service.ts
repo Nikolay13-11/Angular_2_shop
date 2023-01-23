@@ -8,7 +8,7 @@ import { products } from "./productsDb";
 })
 export class ProductsService {
 
-  getProducts(): IProductModel[] {
-    return products;
+  getProducts(): Promise<IProductModel[]> {
+    return Promise.resolve(products);
   }
 }

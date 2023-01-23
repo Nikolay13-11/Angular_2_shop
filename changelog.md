@@ -42,3 +42,10 @@
   7. All Services inject to FirstComponent using @Optional();
   8. Add ChangeFontSizeDirective, which change font-weight for target element by click and include @Input() for set necessary value of font-weight or use default value;
 
+### Pipes
+  1. Add a few kinds of pipes. Currency, upperCase, keyValue, async;
+  2. Add default currency for all application;
+  3. Change getProducts method to return Promise array of products and use Async Pipe;
+  4. Creat and add OrderByPipe to change order of cart;
+  5. Add OrderByPipe pipe and necessary controls elements to CartListComponent;
+  6. Change modules to use CommonModule, FormsModule by SharedModule;
