@@ -18,3 +18,4 @@ export class AppComponent implements AfterViewInit {
     this.appTitle.nativeElement.innerText = 'Dive Shop';
   }
 }
+// OK
