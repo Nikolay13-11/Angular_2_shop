@@ -7,7 +7,7 @@ import { ICartModel } from "../../cart/models/cart.model";
 })
 export class OrderByPipe implements PipeTransform {
 
-  transform(productList: ICartModel[], key: string, isAsc: boolean = false): ICartModel[] {
+  transform(productList: ICartModel[], key: keyof ICartModel, isAsc: boolean = false): ICartModel[] {
 
     if(key === 'cost') {
       return productList.sort((a, b) =>
