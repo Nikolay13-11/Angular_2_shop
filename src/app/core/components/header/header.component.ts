@@ -1,9 +1,35 @@
 import { Component } from '@angular/core';
+import { RouterModule } from "@angular/router";
+
+import {Dialog} from "@angular/cdk/dialog";
+
+import { SharedModule } from "../../../shared/shared.module";
+import { CartService } from "../../../cart/services/cart.service";
+import {LoginComponent} from "../login/login.component";
+import {LoginService} from "../../services/login.service";
+
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  standalone: true
+  standalone: true,
+  imports: [SharedModule, RouterModule, LoginComponent]
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  constructor(
+    public cartService: CartService,
+    public dialog: Dialog,
+    public loginService: LoginService
+  ) {}
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open<string>(LoginComponent, {
+      width: '250px',
+    });
+
+    dialogRef.closed.subscribe(() => {
+      console.log('The dialog was closed');
+    });
+  }
+}

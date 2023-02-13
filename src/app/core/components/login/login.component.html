@@ -1,0 +1,17 @@
+<div class="login" *ngIf="!(isLoggedIn$ | async); else logOutBlock">
+  <h1>Hi</h1>
+  <div>
+    <label id="favorite-animal">What is your name?</label>
+    <input [(ngModel)]="userName" for="favorite-animal" placeholder="Enter your name">
+    <mat-slide-toggle [(ngModel)]="isAdmin">Admin</mat-slide-toggle>
+  </div>
+  <div>
+    <button [disabled]="!userName || userName.length === 0" (click)="onLogin()">Login</button>
+    <button (click)="dialogRef.close()">Cancel</button>
+  </div>
+</div>
+
+<ng-template #logOutBlock>
+  <span>See you soon...</span>
+  <button (click)="onLogOut()">Logout</button>
+</ng-template>

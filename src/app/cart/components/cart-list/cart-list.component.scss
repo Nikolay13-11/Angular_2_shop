@@ -1,3 +1,9 @@
+:host {
+  display: block;
+  width: 80%;
+  margin: 20px auto;
+}
+
 mat-panel-title {
   height: 100%;
 }
@@ -20,6 +26,10 @@ mat-panel-title {
   margin-left: auto;
   font-weight: bold;
   font-size: 20px;
+
+  span {
+    margin-right: 10px;
+  }
 }
 
 .item {
@@ -34,4 +44,27 @@ mat-panel-title {
     p {
       font-size: 18px;
     }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  float: right;
+
+  button {
+    height: 50px;
+    width: 200px;
+    cursor: pointer;
+  }
+
+  span {
+    margin: 10px 0
+  }
+}
+
+.back {
+  float: right;
+  cursor: pointer;
 }
