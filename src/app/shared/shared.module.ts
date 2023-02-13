@@ -8,9 +8,15 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
+import { DialogModule } from '@angular/cdk/dialog';
 
 import { ChangeFontSizeDirective, HighlightDirective } from "./directives";
 import { OrderByPipe } from './pipes/order-by.pipe';
+import { RouterModule } from "@angular/router";
+
 
 
 
@@ -20,6 +26,7 @@ import { OrderByPipe } from './pipes/order-by.pipe';
   exports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     MatCardModule,
     MatExpansionModule,
     MatBadgeModule,
@@ -28,7 +35,10 @@ import { OrderByPipe } from './pipes/order-by.pipe';
     ChangeFontSizeDirective,
     OrderByPipe,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTableModule,
+    DialogModule,
+    MatSlideToggleModule,
   ],
 })
 export class SharedModule { }

@@ -1,0 +1,10 @@
+<div *ngIf="product">
+  <span>Edit product with Id - {{product.id}}</span>
+  <span>{{product.title}}</span>
+  <span>{{product.cost | currency}}</span>
+  <span>{{product.description}}</span>
+  <span>{{product.isAvailable}}</span>
+</div>
+
+
+<button mat-raised-button (click)="onGoBack()">Back</button>

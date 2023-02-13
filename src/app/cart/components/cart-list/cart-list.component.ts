@@ -4,6 +4,7 @@ import { CartService } from "../../services/cart.service";
 import { IProductModel } from "../../../products/models/product.model";
 import { sortOptions } from "../../../core/helpers/constants";
 import { SortOptions } from "../../../core/models/constant.model";
+import { ICartModel } from "../../models/cart.model";
 
 
 @Component({
@@ -14,7 +15,7 @@ import { SortOptions } from "../../../core/models/constant.model";
 export class CartListComponent {
   panelOpenState: boolean = false;
   colorForHover = 'linear-gradient(5deg, rgba(19,93,189,1) 17%, rgba(195,30,6,0.9612219887955182) 78%)';
-  selectedValue!: string;
+  selectedValue!: keyof ICartModel;
 
   selectOptions: SortOptions = sortOptions;
   direction = false;
@@ -27,14 +28,14 @@ export class CartListComponent {
   }
 
   onDeleteItem(id: string) {
-    this.cartService.removeProduct(id)
+    this.cartService.removeProduct(id);
   }
 
   onQuantityIncrease(id: string) {
-    this.cartService.onQuantityIncrease(id)
+    this.cartService.onQuantityIncrease(id);
   }
 
   onQuantityDecrease(id: string) {
-    this.cartService.onQuantityDecrease(id)
+    this.cartService.onQuantityDecrease(id);
   }
 }

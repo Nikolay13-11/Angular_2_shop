@@ -66,7 +66,7 @@ export class CartService {
   };
 
   isEmptyCart() {
-    this.cartProducts.length > 0;
+    return this.cartProducts.length > 0;
   };
 
   private changeQuantity(product: ICartModel, count: number) {

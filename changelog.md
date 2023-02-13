@@ -49,3 +49,19 @@
   4. Creat and add OrderByPipe to change order of cart;
   5. Add OrderByPipe pipe and necessary controls elements to CartListComponent;
   6. Change modules to use CommonModule, FormsModule by SharedModule;
+
+### Routing
+  1. Add routing in Application(include lazy loading modules and components);
+  2. Rework Cart Component and add routing;
+  3. Rework Header Component;
+  4. Add empty "Process Order" Component and add routing with CanActivate Guard(depends on cart length);
+  5. Add admin module with own routing and Guards(CanActivate, CanDeactivate, Resolve);
+  6. Add components for admin:
+  - Admin Component with navigation buttons;
+  - Products Component to show table with all products in the shop;
+  - AddProduct Component(now is empty) to add new products to the shop;
+  - EditProduct Component(now is empty) to edit product(navigate to this component from Products table);
+  - OrdersComponent(now is empty);
+  7. Add Not found page;
+  8. Add Login Component;
+  9. Add Details Component for product;

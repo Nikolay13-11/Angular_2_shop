@@ -1,0 +1,16 @@
+<div class="product" *ngIf="product">
+  <h3>{{product.title}}</h3>
+  <div class="content">
+    <img mat-card-image src="{{product.imageUrl}}" alt="{{product.title}}">
+    <div class="text-content">
+      <p appChangeFontSize [fontWeight]="'lighter'">
+        {{product.description}}
+      </p>
+      <span appChangeFontSize>{{product.cost | currency}}</span>
+    </div>
+  </div>
+  <div class="buttons">
+    <button mat-button (click)="onGoBack()">{{'Back' | uppercase}}</button>
+    <button mat-button [disabled]="!product.isAvailable" (click)="onAddToCart()">{{'Buy' | uppercase}}</button>
+  </div>
+</div>
