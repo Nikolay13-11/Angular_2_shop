@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import { ProductsService } from "../../../products/services/products-service.service";
 import { IProductModel } from "../../../products/models/product.model";
+import {ProductsPromiseService} from "../../../products/services/products-promise.service";
 
 @Component({
   selector: 'app-products',
@@ -9,13 +9,19 @@ import { IProductModel } from "../../../products/models/product.model";
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'title', 'cost', 'isAvailable', 'edit'];
+  displayedColumns: string[] = ['id', 'title', 'cost', 'isAvailable', 'edit', 'delete'];
   dataSource!: IProductModel[];
 
-  constructor(private productsService: ProductsService) {}
+  constructor(private productsPromiseService: ProductsPromiseService) {}
 
   ngOnInit() {
-    this.productsService.getProducts().then(products => this.dataSource = products);
+    this.productsPromiseService.getProducts().then(products => this.dataSource = products);
   }
 
+  onDeleteProduct(id: number) {
+    this.productsPromiseService.deleteProduct(id)
+      .then(() => this.productsPromiseService.getProducts()
+        .then(product => this.dataSource = product))
+      .catch(err => console.log(err));
+  }
 }

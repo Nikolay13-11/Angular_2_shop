@@ -1,0 +1,6 @@
+<mat-form-field appearance="fill">
+  <mat-label>Log Methods</mat-label>
+  <mat-select multiple (openedChange)="open($event)" [(value)]="selected">
+    <mat-option *ngFor="let method of methods" [value]="method">{{method}}</mat-option>
+  </mat-select>
+</mat-form-field>

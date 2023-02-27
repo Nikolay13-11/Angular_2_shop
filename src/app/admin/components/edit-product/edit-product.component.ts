@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router, UrlTree, Data} from "@angular/router";
-import {Observable, Subject, takeUntil, map} from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, UrlTree, Data } from "@angular/router";
+import { Observable, Subject, takeUntil, map } from "rxjs";
 
-import {CanComponentDeactivate} from "../../../core/models/can-component-deactivate.interface";
+import { CanComponentDeactivate } from "../../../core/models/can-component-deactivate.interface";
 
-import {DialogService} from "../../../core/services/dialog.service";
-import {IProductModel} from "../../../products/models/product.model";
+import { DialogService } from "../../../core/services/dialog.service";
+import { IProductModel } from "../../../products/models/product.model";
 
 @Component({
   selector: 'app-edit-product',

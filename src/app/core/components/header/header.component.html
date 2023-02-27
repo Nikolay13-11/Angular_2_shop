@@ -3,6 +3,7 @@
   <div class="icons">
     <span *ngIf="loginService.isLoggedIn | async">Hello {{loginService.userName | async}}!</span>
     <mat-icon routerLink="/admin" routerLinkActive="active" class="icon-cart" aria-hidden="false" fontIcon="account_circle"></mat-icon>
+    <mat-icon routerLink="/settings" routerLinkActive="active" class="icon-cart" aria-hidden="false" fontIcon="settings"></mat-icon>
     <mat-icon routerLink="/cart" routerLinkActive="active" class="icon-cart" matBadge="{{cartService.totalQuantity}}" aria-hidden="false" fontIcon="shopping_cart"></mat-icon>
     <button mat-button (click)="openDialog()">{{(loginService.isLoggedIn | async) ? 'Logout' : 'Login'}}</button>
   </div>
