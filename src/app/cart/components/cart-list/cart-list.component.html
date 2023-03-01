@@ -1,5 +1,5 @@
 <h3>{{"Cart" | uppercase}}</h3>
-<div class="cart" *ngIf="cartService.getProducts().length; else empty">
+<div class="cart" *ngIf="(products$ | async)?.length; else empty">
   <div>
     <mat-checkbox [(ngModel)]="direction">
       <mat-icon *ngIf="direction; else elseBlock" aria-hidden="false" fontIcon="arrow_upward"></mat-icon>
@@ -17,12 +17,12 @@
     </mat-form-field>
   </div>
   <div class="items-container">
-    <div class="item" appHighlight [colorForHover]="colorForHover" *ngFor="let item of cartService.getProducts() | orderBy: selectedValue: direction;  trackBy: trackByFn">
+    <div class="item" appHighlight [colorForHover]="colorForHover" *ngFor="let item of (products$ | async)! | orderBy: selectedValue: direction;  trackBy: trackByFn">
       <app-cart-item
         [product]="item"
         (deleteId)="onDeleteItem($event)"
-        (increaseId)="onQuantityIncrease($event)"
-        (decreaseId)="onQuantityDecrease($event)"
+        (increaseProduct)="onQuantityIncrease($event)"
+        (decreaseProduct)="onQuantityDecrease($event)"
       ></app-cart-item>
     </div>
     <p class="summ"><span>{{'subtotal:' | uppercase}}</span>{{cartService.totalCost | currency}}</p>

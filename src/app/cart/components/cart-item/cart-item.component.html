@@ -1,9 +1,9 @@
 <p>{{product.title}}</p>
 <div class="right-container">
   <div class="left">
-    <mat-icon aria-hidden="false" fontIcon="remove" (click)="onQuantityDecrease(product.id)"></mat-icon>
+    <mat-icon aria-hidden="false" fontIcon="remove" (click)="onQuantityDecrease(product)"></mat-icon>
     <span class="count">{{product.count}}</span>
-    <mat-icon aria-hidden="false" fontIcon="add" (click)="onQuantityIncrease(product.id)"></mat-icon>
+    <mat-icon aria-hidden="false" fontIcon="add" (click)="onQuantityIncrease(product)"></mat-icon>
   </div>
   <div class="right">
     <span class="price">

@@ -1,9 +1,8 @@
 export interface IProductModel {
-  id: string;
+  id: number;
   title: string;
   description: string;
   imageUrl: string;
   cost: number;
-  currency: string;
   isAvailable: boolean;
 }

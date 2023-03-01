@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ICartModel } from "../../models/cart.model";
 
@@ -9,19 +9,19 @@ import { ICartModel } from "../../models/cart.model";
 })
 export class CartItemComponent {
   @Input() product!: ICartModel;
-  @Output() deleteId = new EventEmitter<string>();
-  @Output() increaseId = new EventEmitter<string>();
-  @Output() decreaseId = new EventEmitter<string>();
+  @Output() deleteId = new EventEmitter<number>();
+  @Output() increaseProduct = new EventEmitter<ICartModel>();
+  @Output() decreaseProduct = new EventEmitter<ICartModel>();
 
-  onDeleteItem(id: string) {
-      this.deleteId.emit(id)
+  onDeleteItem(id: number): void {
+      this.deleteId.emit(id);
   };
 
-  onQuantityIncrease(id: string) {
-    this.increaseId.emit(id)
+  onQuantityIncrease(product: ICartModel): void {
+    this.increaseProduct.emit(product);
   };
 
-  onQuantityDecrease(id: string) {
-    this.decreaseId.emit(id)
+  onQuantityDecrease(product: ICartModel): void {
+    this.decreaseProduct.emit(product);
   };
 }

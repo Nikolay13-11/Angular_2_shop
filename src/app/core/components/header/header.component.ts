@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterModule } from "@angular/router";
 
-import {Dialog} from "@angular/cdk/dialog";
+import { Dialog } from "@angular/cdk/dialog";
 
 import { SharedModule } from "../../../shared/shared.module";
 import { CartService } from "../../../cart/services/cart.service";
-import {LoginComponent} from "../login/login.component";
-import {LoginService} from "../../services/login.service";
+import { LoginService } from "../../services/login.service";
+
+import { LoginComponent } from "../login/login.component";
 
 
 @Component({
@@ -21,7 +22,9 @@ export class HeaderComponent {
     public cartService: CartService,
     public dialog: Dialog,
     public loginService: LoginService
-  ) {}
+  ) {
+    this.cartService.getProducts().subscribe();
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open<string>(LoginComponent, {

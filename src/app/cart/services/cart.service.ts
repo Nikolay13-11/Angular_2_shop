@@ -2,76 +2,109 @@ import { Injectable } from '@angular/core';
 
 import { IProductModel } from "../../products/models/product.model";
 import { ICartModel } from "../models/cart.model";
+import { CartObservableService } from "./cart-observable.service";
+import { Observable, tap } from "rxjs";
+import { LocalStorageService } from "../../core/services/local-storage.service";
+import { cartLocalStorageName } from "../../core/helpers/constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private cartProducts: ICartModel[] = [];
 
-  getProducts(): ICartModel[] {
-    return this.cartProducts;
+  constructor(
+    private cartObservableService: CartObservableService,
+    private localStorageService: LocalStorageService,
+  ) {}
+
+  getProducts(): Observable<ICartModel[]> {
+    return this.cartObservableService.getProducts().pipe(
+      tap(products => {
+        const body = JSON.stringify(products);
+        this.localStorageService.setValue('cart', body);
+      }),
+    )
   }
+
 
   addProduct(product: IProductModel): void {
-    const index = this.cartProducts.findIndex(el => el.id === product.id);
+    const currentCart: ICartModel[] = JSON.parse(this.localStorageService.getValue(cartLocalStorageName) || '[]');
+    const index = currentCart.findIndex(cartProduct => cartProduct.id == product.id);
 
     if(index >= 0) {
-      let targetProduct = this.cartProducts.splice(index, 1)[0];
-      targetProduct.count++;
-      this.cartProducts = [...this.cartProducts, targetProduct];
+      const targetProduct = currentCart.splice(index, 1)
+      this.onQuantityIncrease(targetProduct[0]);
       return;
     }
-
-    this.cartProducts = [...this.cartProducts, {
-      ...product,
-      count: 1
-    }];
+    this.cartObservableService.addProduct({...product, count: 1}).pipe(
+      tap(newProduct => {
+        const productsToLocalStorage = JSON.stringify([...currentCart, newProduct]);
+        this.localStorageService.setValue(cartLocalStorageName, productsToLocalStorage)
+      })
+    ).subscribe();
   };
 
-  removeProduct(id: string): void {
-    this.cartProducts = this.cartProducts.filter(product => product.id !== id);
-  };
+  onQuantityIncrease(product: ICartModel): void {
+    const currentCart: ICartModel[] = JSON.parse(this.localStorageService.getValue(cartLocalStorageName) || '[]');
+    const index = currentCart.findIndex(cartProduct => cartProduct.id == product.id);
 
-  onQuantityIncrease(id: string): void {
-    const index = this.cartProducts.findIndex(el => el.id === id);
-    const targetProduct = this.cartProducts.splice(index, 1)
+    if(index >= 0) {
+      currentCart.splice(index, 1)
+    }
 
-    this.changeQuantity(targetProduct[0], 1)
+    const updatedCountProduct = this.changeQuantity(product, 1);
+    this.cartObservableService.updateProduct(updatedCountProduct).pipe(
+      tap(
+        updatedProduct => {
+          const productsToLocalStorage = JSON.stringify([...currentCart, updatedProduct]);
+          this.localStorageService.setValue(cartLocalStorageName, productsToLocalStorage)
+        }
+      )
+    ).subscribe();
   }
 
-  onQuantityDecrease(id: string): void {
-    const index = this.cartProducts.findIndex(el => el.id === id);
+  onQuantityDecrease(product: ICartModel): boolean {
+    const currentCart: ICartModel[] = JSON.parse(this.localStorageService.getValue(cartLocalStorageName) || '[]');
+    const index = currentCart.findIndex(cartProduct => cartProduct.id == product.id);
 
-    if(this.cartProducts[index].count > 1) {
-      const targetProduct = this.cartProducts.splice(index, 1);
-      this.changeQuantity(targetProduct[0], -1);
-
-      return;
+    if(index >= 0) {
+      currentCart.splice(index, 1)
     }
 
-    this.removeProduct(id);
+    if(product.count > 1) {
+      const updatedProduct = this.changeQuantity(product, -1);
+      this.cartObservableService.updateProduct(updatedProduct).pipe(
+        tap(
+          updatedProduct => {
+            const productsToLocalStorage = JSON.stringify([...currentCart, updatedProduct]);
+            this.localStorageService.setValue(cartLocalStorageName, productsToLocalStorage)
+          }
+        )
+      ).subscribe();
+      return false;
+    }
+    this.cartObservableService.deleteProduct(product.id).subscribe();
+    return true;
   };
 
   get totalCost(): number {
-    return +this.cartProducts.reduce((acc, curr) => acc += (curr.cost * curr.count), 0).toFixed(2);
+    const currentCart: ICartModel[] = JSON.parse(this.localStorageService.getValue(cartLocalStorageName) || '[]')
+    return +currentCart.reduce((acc, curr) => acc += (curr.cost * curr.count), 0).toFixed(2);
   };
 
   get totalQuantity(): number {
-    return this.cartProducts.length;
-  };
-
-  removeAllProducts() {
-    this.cartProducts = [];
+    const currentCart: ICartModel[] = JSON.parse(this.localStorageService.getValue(cartLocalStorageName) || '[]')
+    return currentCart.length;
   };
 
   isEmptyCart() {
-    return this.cartProducts.length > 0;
+    const currentCart: ICartModel[] = JSON.parse(this.localStorageService.getValue(cartLocalStorageName) || '[]')
+    return currentCart.length > 0;
   };
 
-  private changeQuantity(product: ICartModel, count: number) {
-    product.count += count
-    this.cartProducts = [...this.cartProducts, product]
+  private changeQuantity(product: ICartModel, count: number): ICartModel {
+    product.count += count;
+    return product;
   };
 
 }

@@ -1,6 +1,8 @@
 import {Injectable, InjectionToken} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LocalStorageService {
   myLocalStorage = window.localStorage;
 

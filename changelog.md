@@ -65,3 +65,13 @@
   7. Add Not found page;
   8. Add Login Component;
   9. Add Details Component for product;
+
+### HttpClient
+1. Add BackEnd using json-server - run throw "npm run start" command;
+2. Add ProductsPromiseService for work with BackEnd with Products;
+3. Add CartObservableService for work with BackEnd with Cart;
+4. Rework CartService for work with CartObservableService;
+5. Add Setting Component, icon in Header and routing. This Component allows to choose request methods which we want to calculate time in TimingInterceptor.
+6. Add TimingInterceptor and provide it using httpInterceptorProviders array;
+7. Add AppSettingsService to load settings for sort and interceptors methods;
+8. Add possibility for Admin Products component to delete products from DB;

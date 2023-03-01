@@ -13,7 +13,7 @@ import { LoginService } from "../services/login.service";
 
 import { CanComponentDeactivate } from "../models/can-component-deactivate.interface";
 import { IProductModel } from "../../products/models/product.model";
-import { ProductsService } from "../../products/services/products-service.service";
+import {ProductsPromiseService} from "../../products/services/products-promise.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class AdminGuard implements CanActivate, CanDeactivate<CanComponentDeacti
   constructor(
     private  loginService: LoginService,
     private router: Router,
-    private productsService: ProductsService,
+    private productsPromiseService: ProductsPromiseService,
   ) {
     this.loginService.isIsAdmin.subscribe(value => this.isAdmin = value);
     this.loginService.isLoggedIn.subscribe(value => this.isLoggedIn = value);
@@ -51,14 +51,8 @@ export class AdminGuard implements CanActivate, CanDeactivate<CanComponentDeacti
 
     const id = route.paramMap.get('productID')!;
 
-    const product = this.productsService.getProductById(id);
-
-    if(product) {
-      return product;
-    }
-
-    return {} as IProductModel;
-
+    return this.productsPromiseService.getProduct(id)
+      .then(product => product ? product : {} as IProductModel);
   }
 
   private checkAdminState() {

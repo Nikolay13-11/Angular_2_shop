@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Location } from "@angular/common";
-import {ActivatedRoute, ParamMap} from "@angular/router";
+import { ActivatedRoute, ParamMap } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
+
+import { CartService } from "../../../cart/services/cart.service";
+import { ProductsPromiseService } from "../../services/products-promise.service";
 
 import { IProductModel } from "../../models/product.model";
-import { ProductsService } from "../../services/products-service.service";
-import {Subject, takeUntil} from "rxjs";
-import {CartService} from "../../../cart/services/cart.service";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class ProductViewComponent implements OnInit, OnDestroy {
   private unsubscribe: Subject<void> = new Subject();
   constructor(
     private location: Location,
-    private productsService: ProductsService,
+    private productsPromiseService: ProductsPromiseService,
     private cartService: CartService,
     private route: ActivatedRoute,
   ) {}
@@ -29,7 +30,8 @@ export class ProductViewComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe)
       )
       .subscribe(
-        (params: ParamMap) => this.product = this.productsService.getProductById(params.get('productID'))
+        (params: ParamMap) => this.productsPromiseService.getProduct(Number(params.get('productID')))
+          .then(product => this.product = product)
       )
   }
 
