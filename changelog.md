@@ -75,3 +75,12 @@
 6. Add TimingInterceptor and provide it using httpInterceptorProviders array;
 7. Add AppSettingsService to load settings for sort and interceptors methods;
 8. Add possibility for Admin Products component to delete products from DB;
+
+### NgRx
+1. Add Store to application;
+2. Create Products state, Products effects, Products Selectors, Products Reducer, Products Action;
+3. Create Cart state, Cart effects, Cart Selectors, Cart Reducer, Cart Action;
+4. Remove CartService and move there logic throw store;
+5. Add Router Store;
+6. Add ‘GO’, ‘GO HOME’, ‘FORWARD’, ‘BACK’ methods to navigate using Router Store;
+7. Add getProductByUrl method and selectRouteParams selector which use Router Store to get data from URL;

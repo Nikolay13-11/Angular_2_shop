@@ -7,13 +7,16 @@ import {
   RouterStateSnapshot,
   UrlTree
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
+
+import { Store } from "@ngrx/store";
+import { selectSelectedProductByUrl } from "../@ngrx/products";
 
 import { LoginService } from "../services/login.service";
 
 import { CanComponentDeactivate } from "../models/can-component-deactivate.interface";
 import { IProductModel } from "../../products/models/product.model";
-import {ProductsPromiseService} from "../../products/services/products-promise.service";
+import { ProductsPromiseService } from "../../products/services/products-promise.service";
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +26,10 @@ export class AdminGuard implements CanActivate, CanDeactivate<CanComponentDeacti
   isAdmin: boolean = false;
 
   constructor(
-    private  loginService: LoginService,
+    private loginService: LoginService,
     private router: Router,
     private productsPromiseService: ProductsPromiseService,
+    private store: Store
   ) {
     this.loginService.isIsAdmin.subscribe(value => this.isAdmin = value);
     this.loginService.isLoggedIn.subscribe(value => this.isLoggedIn = value);
@@ -49,10 +53,15 @@ export class AdminGuard implements CanActivate, CanDeactivate<CanComponentDeacti
       return {} as IProductModel;
     }
 
-    const id = route.paramMap.get('productID')!;
-
-    return this.productsPromiseService.getProduct(id)
-      .then(product => product ? product : {} as IProductModel);
+    return this.store.select(selectSelectedProductByUrl)
+      .pipe(
+        switchMap(product => {
+          if (product) {
+            return of(product)
+          }
+          return of({} as IProductModel)
+        })
+      );
   }
 
   private checkAdminState() {

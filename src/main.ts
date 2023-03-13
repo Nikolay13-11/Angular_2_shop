@@ -8,6 +8,7 @@ import { AppComponent} from "./app/app.component";
 import { APP_ROUTES } from "./app.routing";
 import { ProductsModule } from "./app/products/products.module";
 import { httpInterceptorProviders } from "./app/core/interceptors";
+import { AppStoreModule } from "./app/core/@ngrx/app-store.module";
 
 
 
@@ -19,6 +20,6 @@ bootstrapApplication(AppComponent, {
       provide: DEFAULT_CURRENCY_CODE,
       useValue: 'CAD'
     },
-    importProvidersFrom([ProductsModule, HttpClientModule, RouterModule.forRoot(APP_ROUTES)]),
+    importProvidersFrom([ProductsModule, HttpClientModule, AppStoreModule, RouterModule.forRoot(APP_ROUTES)]),
   ],
 })

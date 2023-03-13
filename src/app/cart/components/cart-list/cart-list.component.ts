@@ -1,10 +1,14 @@
-import { Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, takeUntil } from "rxjs";
 
-import { CartService } from "../../services/cart.service";
-import { CartObservableService } from "../../services/cart-observable.service";
 import { AppSettingsService } from "../../../core/services/app-settings.service";
 import { sortOptions } from "../../../core/helpers/constants";
+
+import { Store } from "@ngrx/store";
+import { selectCartData, selectCartDataTotalCost } from "../../../core/@ngrx/cart";
+
+import * as CartActions from '../../../core/@ngrx/cart';
+import * as RouterActions from '../../../core/@ngrx/router';
 
 import { IProductModel } from "../../../products/models/product.model";
 import { SortOptions } from "../../../core/models/constant.model";
@@ -23,19 +27,19 @@ export class CartListComponent implements OnInit, OnDestroy {
   selectOptions: SortOptions = sortOptions;
   direction = false;
 
-  products$!: Observable<ICartModel[]>;
+  products$!: Observable<ReadonlyArray<ICartModel>>;
+  cartTotalCost$!: Observable<number>;
 
   private unsubscribe: Subject<void> = new Subject();
 
   constructor(
-    public cartService: CartService,
-    private cartObservableService: CartObservableService,
     private appSettingsService: AppSettingsService,
-
+    private store: Store,
   ) {}
 
   ngOnInit() {
-    this.products$ = this.cartService.getProducts();
+    this.products$ = this.store.select(selectCartData);
+    this.cartTotalCost$ = this.store.select(selectCartDataTotalCost);
     this.appSettingsService.getSortSettings().pipe(
       takeUntil(this.unsubscribe)
     )
@@ -55,19 +59,31 @@ export class CartListComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  onDeleteItem(id: number) {
-    this.cartObservableService.deleteProduct(id).subscribe();
-    this.products$ = this.cartService.getProducts();
+  onDeleteItem(product: ICartModel) {
+    this.store.dispatch(CartActions.deleteCartProduct({product}));
   }
 
   onQuantityIncrease(product: ICartModel) {
-    this.cartService.onQuantityIncrease(product);
+    this.store.dispatch(CartActions.updateCartProduct({
+      product: {
+        ...product,
+        count: product.count + 1
+      }
+    }));
   }
 
   onQuantityDecrease(product: ICartModel) {
-    const flag = this.cartService.onQuantityDecrease(product);
-    if(flag) {
-      this.products$ = this.cartService.getProducts();
+    if(product.count > 0) {
+      this.store.dispatch(CartActions.updateCartProduct({
+        product: {
+          ...product,
+          count: product.count - 1
+        }
+      }));
     }
+  }
+
+  navigate() {
+    this.store.dispatch(RouterActions.back());
   }
 }

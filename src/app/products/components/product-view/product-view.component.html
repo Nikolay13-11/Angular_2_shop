@@ -11,6 +11,8 @@
   </div>
   <div class="buttons">
     <button mat-button (click)="onGoBack()">{{'Back' | uppercase}}</button>
-    <button mat-button [disabled]="!product.isAvailable" (click)="onAddToCart()">{{'Buy' | uppercase}}</button>
+    <button mat-button [ngClass]="{'inCart': inCart}" [disabled]="!product.isAvailable" (click)="onAddToCart(product)">
+      {{inCart ? 'In Cart' : 'Buy' | uppercase}}
+    </button>
   </div>
 </div>

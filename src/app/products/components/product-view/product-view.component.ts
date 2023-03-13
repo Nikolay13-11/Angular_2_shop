@@ -1,10 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Location } from "@angular/common";
-import { ActivatedRoute, ParamMap } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { combineLatest, Subject, takeUntil } from "rxjs";
 
-import { CartService } from "../../../cart/services/cart.service";
-import { ProductsPromiseService } from "../../services/products-promise.service";
+import { Store } from "@ngrx/store";
+import { selectSelectedProductByUrl } from "../../../core/@ngrx/products";
+
+import { selectCartDataIds } from "../../../core/@ngrx/cart";
+
+import * as CartActions from "../../../core/@ngrx/cart";
+import * as RouterActions from "../../../core/@ngrx/router";
 
 import { IProductModel } from "../../models/product.model";
 
@@ -15,37 +18,49 @@ import { IProductModel } from "../../models/product.model";
   styleUrls: ['./product-view.component.scss']
 })
 export class ProductViewComponent implements OnInit, OnDestroy {
-  product!: IProductModel | undefined;
-  private unsubscribe: Subject<void> = new Subject();
+  product!: Readonly<IProductModel> | undefined;
+  cartIds!: ReadonlyArray<number>;
+  inCart = false;
+
+  private unsubscribe$: Subject<void> = new Subject();
+
   constructor(
-    private location: Location,
-    private productsPromiseService: ProductsPromiseService,
-    private cartService: CartService,
-    private route: ActivatedRoute,
+    private store: Store
   ) {}
 
   ngOnInit() {
-    this.route.paramMap
-      .pipe(
-        takeUntil(this.unsubscribe)
-      )
-      .subscribe(
-        (params: ParamMap) => this.productsPromiseService.getProduct(Number(params.get('productID')))
-          .then(product => this.product = product)
-      )
+    combineLatest([this.store.select(selectSelectedProductByUrl), this.store.select(selectCartDataIds)])
+      .pipe( takeUntil(this.unsubscribe$))
+      .subscribe(([product, ids]) => {
+        this.product = product;
+        this.cartIds = ids;
+        if(this.product && this.cartIds) {
+          this.inCart = this.cartIds.includes(this.product.id)
+        }
+      })
   }
 
   ngOnDestroy() {
-    this.unsubscribe.complete();
+    this.unsubscribe$.complete();
   }
 
   onGoBack() {
-    this.location.back();
+   this.store.dispatch(RouterActions.back());
   }
 
-  onAddToCart() {
-    if(this.product) {
-      this.cartService.addProduct(this.product);
+  onAddToCart(product: IProductModel) {
+    if(!this.cartIds.includes(product.id)) {
+      this.store.dispatch(CartActions.createCartProduct({
+        product: {
+          ...product,
+          count: 1
+        }
+      }));
+      return;
     }
+
+    this.store.dispatch(RouterActions.go({
+      path: ['/cart']
+    }));
   }
 }

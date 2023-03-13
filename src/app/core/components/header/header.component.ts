@@ -4,10 +4,15 @@ import { RouterModule } from "@angular/router";
 import { Dialog } from "@angular/cdk/dialog";
 
 import { SharedModule } from "../../../shared/shared.module";
-import { CartService } from "../../../cart/services/cart.service";
 import { LoginService } from "../../services/login.service";
 
 import { LoginComponent } from "../login/login.component";
+
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { selectCartDataSize } from "../../@ngrx/cart";
+
+import * as CartActions from '../../@ngrx/cart';
 
 
 @Component({
@@ -18,12 +23,15 @@ import { LoginComponent } from "../login/login.component";
   imports: [SharedModule, RouterModule, LoginComponent]
 })
 export class HeaderComponent {
+  cartSize$!: Observable<number>;
+
   constructor(
-    public cartService: CartService,
     public dialog: Dialog,
-    public loginService: LoginService
+    public loginService: LoginService,
+    private store: Store
   ) {
-    this.cartService.getProducts().subscribe();
+    this.cartSize$ = this.store.select(selectCartDataSize);
+    this.store.dispatch(CartActions.getCart());
   }
 
   openDialog(): void {

@@ -1,27 +1,40 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from "rxjs";
+import { Store } from "@ngrx/store";
+
+import { selectProductsData } from "../../../core/@ngrx/products";
+import * as ProductsActions from '../../../core/@ngrx/products';
 
 import { IProductModel } from "../../../products/models/product.model";
-import {ProductsPromiseService} from "../../../products/services/products-promise.service";
+
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'title', 'cost', 'isAvailable', 'edit', 'delete'];
-  dataSource!: IProductModel[];
+  dataSource!: ReadonlyArray<IProductModel>;
 
-  constructor(private productsPromiseService: ProductsPromiseService) {}
+  private unsubscribe$: Subject<void> = new Subject();
+
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.productsPromiseService.getProducts().then(products => this.dataSource = products);
+    this.store.select(selectProductsData)
+      .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+      .subscribe(data => this.dataSource = data);
+
   }
 
-  onDeleteProduct(id: number) {
-    this.productsPromiseService.deleteProduct(id)
-      .then(() => this.productsPromiseService.getProducts()
-        .then(product => this.dataSource = product))
-      .catch(err => console.log(err));
+  ngOnDestroy() {
+    this.unsubscribe$.complete();
+  }
+
+  onDeleteProduct(product: IProductModel) {
+    this.store.dispatch(ProductsActions.deleteProduct({product}));
   }
 }
