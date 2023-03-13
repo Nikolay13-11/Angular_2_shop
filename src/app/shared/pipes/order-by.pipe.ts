@@ -7,18 +7,19 @@ import { ICartModel } from "../../cart/models/cart.model";
 })
 export class OrderByPipe implements PipeTransform {
 
-  transform(productList?: ICartModel[], key: keyof ICartModel = 'count', isAsc: boolean = false): ICartModel[] {
+  transform(productList?: ReadonlyArray<ICartModel>, key: keyof ICartModel = 'count', isAsc: boolean = false): ICartModel[] {
     if(productList) {
+      const copy = [...productList]
       if(key === 'cost') {
-        return productList.sort((a, b) =>
+        return copy.sort((a, b) =>
           isAsc ? (a.cost * a.count) - (b.cost * b.count) :  (b.cost * b.count) - (a.cost * a.count)
         );
       }
 
       if(isAsc) {
-        return productList.sort((a: any, b: any) => a[key] < b[key] ? -1 : 1);
+        return copy.sort((a: any, b: any) => a[key] < b[key] ? -1 : 1);
       }
-      return productList.sort((a: any, b: any) => a[key] > b[key] ? -1 : 1);
+      return copy.sort((a: any, b: any) => a[key] > b[key] ? -1 : 1);
     }
     return []
   }

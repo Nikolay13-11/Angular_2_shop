@@ -45,7 +45,8 @@ export class CartObservableService {
   }
 
   updateProduct(product: ICartModel): Observable<ICartModel> {
-    return this.http.put<ICartModel>(`${cartUrl}/${product.id}`, product).pipe(
+    return this.http.put<ICartModel>(`${cartUrl}/${product.id}`, product)
+      .pipe(
       catchError(this.handleError)
     );
   }

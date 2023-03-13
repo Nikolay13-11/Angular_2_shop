@@ -20,18 +20,18 @@
     <div class="item" appHighlight [colorForHover]="colorForHover" *ngFor="let item of (products$ | async)! | orderBy: selectedValue: direction;  trackBy: trackByFn">
       <app-cart-item
         [product]="item"
-        (deleteId)="onDeleteItem($event)"
+        (deleteProduct)="onDeleteItem($event)"
         (increaseProduct)="onQuantityIncrease($event)"
         (decreaseProduct)="onQuantityDecrease($event)"
       ></app-cart-item>
     </div>
-    <p class="summ"><span>{{'subtotal:' | uppercase}}</span>{{cartService.totalCost | currency}}</p>
+    <p class="summ"><span>{{'subtotal:' | uppercase}}</span>{{cartTotalCost$ | async | currency}}</p>
   </div>
 </div>
 <div class="buttons">
   <button mat-button routerLink="/order">{{'proceed to checkout' | uppercase}}</button>
   <span>or</span>
-  <button mat-button routerLink="/">{{'continue shopping' | uppercase}}</button>
+  <button mat-button (click)="navigate()">{{'continue shopping' | uppercase}}</button>
 </div>
 
 <ng-template #empty>

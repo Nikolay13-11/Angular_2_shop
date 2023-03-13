@@ -9,12 +9,13 @@ import { ICartModel } from "../../models/cart.model";
 })
 export class CartItemComponent {
   @Input() product!: ICartModel;
-  @Output() deleteId = new EventEmitter<number>();
+
+  @Output() deleteProduct = new EventEmitter<ICartModel>();
   @Output() increaseProduct = new EventEmitter<ICartModel>();
   @Output() decreaseProduct = new EventEmitter<ICartModel>();
 
-  onDeleteItem(id: number): void {
-      this.deleteId.emit(id);
+  onDeleteItem(product: ICartModel): void {
+      this.deleteProduct.emit(product);
   };
 
   onQuantityIncrease(product: ICartModel): void {

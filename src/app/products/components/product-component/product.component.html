@@ -10,7 +10,9 @@
     <span appChangeFontSize>{{product.cost | currency}}</span>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button [disabled]="!product.isAvailable" (click)="onAddToCart()">{{'Buy' | uppercase}}</button>
+    <button [ngClass]="{'inCart': inCart}" mat-button matTooltip="Out of stock" [matTooltipDisabled]="product.isAvailable" [disabled]="!product.isAvailable" (click)="onAddToCart()">
+      {{inCart ? 'In Cart' : 'Buy' | uppercase}}
+    </button>
     <button mat-button routerLink="/product/{{product.id}}">{{'Details' | uppercase}}</button>
   </mat-card-actions>
 </mat-card>

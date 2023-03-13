@@ -10,12 +10,14 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 import { DialogModule } from '@angular/cdk/dialog';
 
 import { ChangeFontSizeDirective, HighlightDirective } from "./directives";
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { RouterModule } from "@angular/router";
+
 
 
 
@@ -39,6 +41,7 @@ import { RouterModule } from "@angular/router";
     MatTableModule,
     DialogModule,
     MatSlideToggleModule,
+    MatTooltipModule
   ],
 })
 export class SharedModule { }

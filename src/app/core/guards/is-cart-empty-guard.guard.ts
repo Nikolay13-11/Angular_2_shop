@@ -5,22 +5,29 @@ import {
   RouterStateSnapshot,
   UrlTree
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import {CartService} from "../../cart/services/cart.service";
+import { combineLatest, Observable, of, switchMap } from 'rxjs';
+
+import { Store } from "@ngrx/store";
+import { selectCartDataIsEmpty, selectCartDataTotalCost } from "../@ngrx/cart";
 
 @Injectable({
   providedIn: 'root'
 })
 export class IsCartEmptyGuardGuard implements  CanActivate {
 
-  constructor(private cartService: CartService) {}
+  constructor(private store: Store) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log('Can Activate guard was called')
+    console.log('Can Activate guard was called');
     return this.checkCart();
   }
 
-  private checkCart(): boolean {
-    return this.cartService.isEmptyCart();
+  private checkCart(): Observable<boolean> {
+    return combineLatest(this.store.select(selectCartDataIsEmpty), this.store.select(selectCartDataTotalCost))
+      .pipe(
+        switchMap(([isEmpty, cost]) => {
+          return of(isEmpty && cost > 0)
+        })
+      );
   }
 }

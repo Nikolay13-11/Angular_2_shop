@@ -4,7 +4,7 @@
     },
     "sort": {
       "defaultLogValues": {
-        "order": "count",
+        "order": "title",
         "direction": "false"
       }
   }
