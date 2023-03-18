@@ -36,3 +36,4 @@ export class AppComponent implements AfterViewInit {
     this.store.dispatch(RouterActions.goHome());
   }
 }
+// ok
