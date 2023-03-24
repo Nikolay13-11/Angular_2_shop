@@ -31,6 +31,9 @@ export class ProductViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     combineLatest([this.store.select(selectSelectedProductByUrl), this.store.select(selectCartDataIds)])
       .pipe( takeUntil(this.unsubscribe$))
+      // думаю, что это правильнее делать в map или в tap
+      // так как, всегда есть вероятность, что subscribe будет не тут,
+      // а в другом месте
       .subscribe(([product, ids]) => {
         this.product = product;
         this.cartIds = ids;
