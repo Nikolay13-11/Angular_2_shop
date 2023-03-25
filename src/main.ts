@@ -12,6 +12,7 @@ import { AppStoreModule } from "./app/core/@ngrx/app-store.module";
 
 
 
+
 bootstrapApplication(AppComponent, {
   providers: [
     httpInterceptorProviders,
@@ -20,6 +21,6 @@ bootstrapApplication(AppComponent, {
       provide: DEFAULT_CURRENCY_CODE,
       useValue: 'CAD'
     },
-    importProvidersFrom([ProductsModule, HttpClientModule, AppStoreModule, RouterModule.forRoot(APP_ROUTES)]),
+    importProvidersFrom([HttpClientModule, AppStoreModule, ProductsModule, RouterModule.forRoot(APP_ROUTES)]),
   ],
 })

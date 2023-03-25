@@ -22,7 +22,7 @@ export const APP_ROUTES: Routes = [
   {
     path: 'order',
     canActivate: [IsCartEmptyGuardGuard],
-    loadComponent: () => import('./app/core/components/process-order/process-order.component').then(c => c.ProcessOrderComponent)
+    loadComponent: () => import('./app/order/components/process-order/process-order.component').then(c => c.ProcessOrderComponent)
   },
   {
     path: 'settings',

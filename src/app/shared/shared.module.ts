@@ -11,10 +11,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { DialogModule } from '@angular/cdk/dialog';
 
-import { ChangeFontSizeDirective, HighlightDirective } from "./directives";
+import { ChangeFontSizeDirective, HighlightDirective, ValidateEmailInputDirective } from "./directives";
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { RouterModule } from "@angular/router";
 
@@ -23,7 +24,7 @@ import { RouterModule } from "@angular/router";
 
 
 @NgModule({
-  declarations: [HighlightDirective, ChangeFontSizeDirective, OrderByPipe],
+  declarations: [HighlightDirective, ChangeFontSizeDirective, ValidateEmailInputDirective, OrderByPipe],
   imports: [],
   exports: [
     CommonModule,
@@ -35,13 +36,15 @@ import { RouterModule } from "@angular/router";
     MatIconModule,
     HighlightDirective,
     ChangeFontSizeDirective,
+    ValidateEmailInputDirective,
     OrderByPipe,
     MatCheckboxModule,
     MatSelectModule,
     MatTableModule,
     DialogModule,
     MatSlideToggleModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule,
   ],
 })
 export class SharedModule { }

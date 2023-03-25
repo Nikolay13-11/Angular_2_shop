@@ -1,0 +1,64 @@
+:host {
+  display: flex;
+  justify-content: center;
+  max-height: 90%;
+  flex-direction: column;
+  align-items: center;
+
+  form {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
+
+    .order {
+      width: 100px;
+    }
+
+    .pickUp {
+      display: flex;
+
+      label {
+        margin-right: 10px;
+      }
+    }
+
+    .addPhone {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      button {
+        transform: scale(.5);
+        cursor: pointer;
+      }
+    }
+
+    .address {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+    }
+  }
+
+  .form-control {
+    display: flex;
+    flex-direction: column;
+
+
+    span {
+      color: red;
+      font-size: small;
+    }
+  }
+}
+
+
+input.ng-valid.ng-touched{
+  background: lightgreen;
+}
+
+input.ng-invalid.ng-touched{
+  background: lightcoral;
+}

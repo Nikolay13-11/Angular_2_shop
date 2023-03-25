@@ -1,0 +1,64 @@
+<h2>Finish your order</h2>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
+      <div class="form-control">
+        <input class="form-control" formControlName="firstName" placeholder="first name">
+        <span *ngIf="firstName.invalid && firstName.touched">
+            <span>{{firstName.errors | getErrorMessage: "firstName"}}</span>
+        </span>
+      </div>
+      <div class="form-control">
+        <input formControlName="lastName" placeholder="last name">
+      </div>
+      <div class="form-control">
+        <input formControlName="email" type="email" placeholder="email" appValidateEmailInput>
+        <span *ngIf="email.invalid && email.touched">
+            <span>{{email.errors | getErrorMessage: "email"}}</span>
+        </span>
+      </div>
+      <div class="phones" formArrayName="phones">
+        <div class="addPhone">
+          <span>Phone</span>
+          <button mat-button (click)="onAddPhone()">
+            <mat-icon fontIcon="add"></mat-icon>
+          </button>
+        </div>
+        <div *ngFor="let phone of phones.controls; let i = index">
+          <input formControlName="{{i}}" type="tel" placeholder="phone">
+          <mat-icon *ngIf="i != 0" fontIcon="delete" (click)="onRemovePhone(i)"></mat-icon>
+        </div>
+      </div>
+      <div class="pickUp">
+        <label for="pickUp">pickUp</label>
+        <div>
+          <input formControlName="pickUp" type="checkbox" name="pickUp" id="pickUp">
+        </div>
+      </div>
+      <div *ngIf="!pickUp.value" class="address" formGroupName="address">
+        <div class="form-control">
+          <select class="form-control"
+                  id="country"
+                  formControlName="country">
+            <option value="">Select a Country...</option>
+            <option *ngFor="let country of countries"
+                    [value]="country">{{country}}</option>
+          </select>
+          <span *ngIf="country.invalid && country.touched">
+            <span>{{country.errors | getErrorMessage: "country"}}</span>
+        </span>
+        </div>
+        <div class="form-control">
+          <input formControlName="city" placeholder="City" id="city">
+          <span *ngIf="city.invalid && city.touched">
+            <span>{{city.errors | getErrorMessage: "city"}}</span>
+        </span>
+        </div>
+        <div class="form-control">
+          <textarea formControlName="street" placeholder="street" id="street"></textarea>
+          <span *ngIf="street.invalid && street.touched">
+            <span>{{street.errors | getErrorMessage: "street"}}</span>
+        </span>
+        </div>
+      </div>
+  <button class="order" mat-button [disabled]="!orderForm.valid">Order</button>
+</form>

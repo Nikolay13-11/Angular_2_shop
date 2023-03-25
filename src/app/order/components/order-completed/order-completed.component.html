@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Dear, {{data.formData.firstName}} {{data.formData.lastName}}</h2>
+<mat-dialog-content class="mat-typography">
+  <span>Your order was successfully created</span>
+  <span *ngIf="data.formData.pickUp; else elseBlock">You can pickup the order in out office. </span>
+  <ng-template #elseBlock>We deliver your order to
+    <span class="address">{{data.formData.address.country}}, </span>
+    <span class="address">{{data.formData.address.city}}, </span>
+    <span class="address">{{data.formData.address.street}}. </span>
+  </ng-template>
+  <span>In 2-3 working days</span>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Return to the shop</button>
+</mat-dialog-actions>
