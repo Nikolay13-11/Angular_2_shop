@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest, Subject, takeUntil } from "rxjs";
+import { combineLatest, map, Subject, takeUntil } from "rxjs";
 
 import { Store } from "@ngrx/store";
 import { selectSelectedProductByUrl } from "../../../core/@ngrx/products";
@@ -30,17 +30,17 @@ export class ProductViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     combineLatest([this.store.select(selectSelectedProductByUrl), this.store.select(selectCartDataIds)])
-      .pipe( takeUntil(this.unsubscribe$))
-      // думаю, что это правильнее делать в map или в tap
-      // так как, всегда есть вероятность, что subscribe будет не тут,
-      // а в другом месте
-      .subscribe(([product, ids]) => {
-        this.product = product;
-        this.cartIds = ids;
-        if(this.product && this.cartIds) {
-          this.inCart = this.cartIds.includes(this.product.id)
-        }
-      })
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        map(([product, ids]) => {
+          this.product = product;
+          this.cartIds = ids;
+          if(this.product && this.cartIds) {
+            this.inCart = this.cartIds.includes(this.product.id)
+          }
+        })
+      )
+      .subscribe()
   }
 
   ngOnDestroy() {
