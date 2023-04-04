@@ -22,7 +22,7 @@ import * as RouterActions from '../../../core/@ngrx/router/router.actions';
 @Component({
   selector: 'app-process-order',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, GetErrorMessagePipe],
+  imports: [CommonModule, ReactiveFormsModule, SharedModule, GetErrorMessagePipe],
   templateUrl: './process-order.component.html',
   styleUrls: ['./process-order.component.scss']
 })
